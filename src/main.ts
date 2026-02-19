@@ -5,6 +5,12 @@ import { ValidationPipe } from '@nestjs/common';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(process.env.PORT ?? 2458);
+  // await app.listen(process.env.PORT ?? 2458);
+  // Vercel handles the server automatically via api/index.ts
+  await app.init();
 }
-bootstrap();
+
+// Only call bootstrap() when running locally (not on Vercel)
+if (process.env.VERCEL !== '1') {
+  bootstrap();
+}
